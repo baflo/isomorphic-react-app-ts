@@ -1,0 +1,49 @@
+{
+  "name": "isomorphic-react-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development DEBUG=true webpack -w",
+    "dev-windows": "set NODE_ENV=development && set DEBUG=true && webpack -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/bootstrap": "^3.3.36",
+    "@types/jquery": "^3.2.18",
+    "@types/react": "^16.0.34",
+    "@types/react-dom": "^16.0.3",
+    "@types/restify": "^5.0.7",
+    "css-loader": "^0.28.8",
+    "file-loader": "^1.1.6",
+    "isomorphic-style-loader": "^4.0.0",
+    "isomorphic-style-loader-utils": "^1.0.7",
+    "nodemon": "^1.14.11",
+    "postcss-loader": "^2.0.10",
+    "postcss-scss": "^1.0.3",
+    "purecss": "^1.0.0",
+    "raw-loader": "^0.5.1",
+    "react": "^16.2.0",
+    "ts-loader": "^3.2.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.6.2",
+    "typings-for-css-modules-loader": "^1.7.0",
+    "webpack-merge": "^4.1.1",
+    "webpack-node-externals": "^1.6.0",
+    "webpack-shell-plugin": "^0.5.0"
+  },
+  "dependencies": {
+    "@types/uuid": "^3.4.3",
+    "bootstrap": "^4.0.0",
+    "jquery": "^3.2.1",
+    "popper.js": "^1.12.9",
+    "react-dom": "^16.2.0",
+    "restify": "^6.3.4",
+    "uuid": "^3.1.0",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.10.1"
+  }
+}

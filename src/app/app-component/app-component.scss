@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+:global {
+    @import "../../../node_modules/purecss/build/pure.css";
+    @import "../../../node_modules/purecss/build/menus.css";
+
+    .hallo-welt {
+        background: red;
+    }
+}
+
+.test {
+    background: green;
+}
+
+html, body, #app {
+    min-height: 100%;
+    background-color: grey;
+}
+
+.main {
+    background-color: white;
+}
