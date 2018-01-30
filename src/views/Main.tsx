@@ -17,7 +17,7 @@ export default class MainViewComponent extends React.Component<HTMLWebsiteProps>
                 <head>
                     <title>{this.props.title}</title>
                     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-                    <style dangerouslySetInnerHTML={{ __html: this.css.join() }} />
+                    <link rel="stylesheet" type="text/css" href="/libs/styles.css" />
                 </head>
                 <body>
                     <div id={'app'} dangerouslySetInnerHTML={{ __html: renderedApp }} />

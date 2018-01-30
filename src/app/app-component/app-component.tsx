@@ -1,10 +1,8 @@
 import * as React from "react";
-import { WithStyles } from "isomorphic-style-loader-utils";
 import * as s from "./app-component.scss";
 
 type AppProps = {};
 
-@WithStyles(s)
 export default class App extends React.Component<AppProps, { color: string }> {
     state = {
         color: "unset"
@@ -31,7 +29,9 @@ export default class App extends React.Component<AppProps, { color: string }> {
                                 href="#"
                                 className={'pure-menu-heading pure-menu-link'}
                             >
-                                {'BRAND'}
+                                <span className={s.test}>
+                                    {'BRANDi'}
+                                </span>
                             </a>
                             <ul className={'pure-menu-list'}>
                                 <li className={'pure-menu-item'}>

@@ -1,11 +1,53 @@
 const path = require("path");
 const webpack = require("webpack");
-const shellPlugin = require("webpack-shell-plugin");
+const ShellPlugin = require("webpack-shell-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
 const merge = require("webpack-merge");
 
-const publicPath = 'assets/';
-const outputPath = '';
+const STYLE_GLOBAL_FILE = "__global.css";
+const PUBLIC_PATH = 'assets/';
+const OUTPUT_PATH = '';
+
+
+function styleLoader(config = {}) {
+    const include = config.include || undefined;
+    const exclude = config.exclude || undefined;
+    const cssModules = config.cssModules || false;
+    const cssMinimize = config.cssMinimize || false;
+
+    return {
+        test: /.s?css$/,
+        include,
+        exclude,
+        use: [
+            "isomorphic-style-loader",
+            {
+                loader: "typings-for-css-modules-loader",
+                options: {
+                    modules: cssModules,
+                    namedExport: true,
+                    camelCase: true,
+                    importLoaders: 1,
+                    minimize: cssMinimize,
+                    localIdentName: cssMinimize ? "[hash:12]" : "[local]____[path][name]____[hash:base64:5]",
+                    alias: {
+                        "../fonts": "bootstrap/fonts",
+                    },
+                }
+            },
+            {
+                loader: "postcss-loader",
+                options: {
+                    parser: 'postcss-scss',
+                    plugins: [
+                        require("postcss-import")({})
+                    ]
+                }
+            }
+        ]
+    }
+}
 
 const config = {
     // context: '/',
@@ -13,7 +55,7 @@ const config = {
     output: {
         filename: '[name].js',
         path: path.join(__dirname, './bundles'),
-        publicPath: publicPath
+        publicPath: PUBLIC_PATH
     },
     resolve: {
         // Add `.ts` and `.tsx` as a resolvable extension.
@@ -27,25 +69,62 @@ const config = {
                 loader: 'ts-loader'
             },
             {
-                test: /\.s?css$/,
-                use: [
-                    'isomorphic-style-loader',
-                    {
-                        loader: 'typings-for-css-modules-loader',
-                        options: {
-                            modules: true,
-                            namedExport: true,
-                            camelCase: true,
-                            importLoaders: 1,
+                test: /.s?css$/,
+                exclude: path.join(__dirname, 'src/global.css'),
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: [
+                        {
+                            loader: "typings-for-css-modules-loader",
+                            options: {
+                                importLoaders: 1,
+                                modules: true,
+                                namedExport: true,
+                                camelCase: true,
+                                localIdentName: false ? "[hash:12]" : "[local]____[path][name]____[hash:base64:5]",
+                                alias: {
+                                    "../fonts": "bootstrap/fonts",
+                                },
+                            }
                         },
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            parser: 'postcss-scss'
+                        {
+                            loader: "postcss-loader",
+                            options: {
+                                parser: 'postcss-scss',
+                                plugins: [
+                                    require("postcss-import")({})
+                                ]
+                            }
                         }
-                    }
-                ]
+                    ]
+                })
+            },
+            {
+                test: /.s?css$/,
+                include: path.join(__dirname, 'src/global.css'),
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: [
+                        {
+                            loader: "css-loader",
+                            options: {
+                                importLoaders: 1,
+                                alias: {
+                                    "../fonts": "bootstrap/fonts",
+                                },
+                            }
+                        },
+                        {
+                            loader: "postcss-loader",
+                            options: {
+                                parser: 'postcss-scss',
+                                plugins: [
+                                    require("postcss-import")({})
+                                ]
+                            }
+                        }
+                    ]
+                })
             },
             {
                 test: /\.(?:jpg|jpeg|png|gif|svg)$/i,
@@ -62,16 +141,24 @@ const config = {
     },
     plugins: [
         new webpack.EnvironmentPlugin(['NODE_ENV', 'DEBUG']),
-        new shellPlugin({
+        new ShellPlugin({
             onBuildEnd: ['nodemon ./bundles/server.js'],
             dev: true
+        }),
+        new ExtractTextPlugin({
+            filename: "styles.css",
+            allChunks: true
         })
     ]
 }
 
+
 const clientConfig = merge(config, {
     entry: {
-        client: './src/client',
+        client: [
+            './src/global.css',
+            './src/client'
+        ]
     },
     output: {
         library: ['App']

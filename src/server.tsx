@@ -10,19 +10,27 @@ import MainViewComponent from "./views/Main";
 const server = restify.createServer();
 const assetsPath = path.join(__dirname, 'assets');
 
-server.get('/libs/client.js', (req, res, next) => {
-    fs.readFile('bundles/client.js', function (err, data) {
-        if (err) {
-            next(err);
-            return;
-        }
+function serveFile(from: string, to: string, contentType?: string) {
+    server.get(from, (req, res, next) => {
+        fs.readFile(to, function (err, data) {
+            if (err) {
+                next(err);
+                return;
+            }
 
-        res.setHeader('Content-Type', 'text/html');
-        res.writeHead(200);
-        res.end(data);
-        next();
+            if (contentType) {
+                res.setHeader('Content-Type', contentType);
+            }
+            res.writeHead(200);
+            res.end(data);
+            next();
+        });
     });
-});
+}
+
+serveFile('/libs/client.js', 'bundles/client.js', 'text/html');
+serveFile('/libs/styles.js', 'bundles/styles.js', 'text/javascript');
+serveFile('/libs/styles.css', 'bundles/styles.css', 'text/css');
 
 server.get(/^\/assets\//, restify.plugins.serveStatic({
     directory: assetsPath,
