@@ -19,7 +19,11 @@
         "noImplicitAny": true,
         "strictNullChecks": true,
         "suppressImplicitAnyIndexErrors": true,
-        "noUnusedLocals": true
+        "noUnusedLocals": true,
+        "baseUrl": ".",
+        "paths": {
+            "@app/*": ["src/app/*"]
+        }
     },
     "include": [
         "src"

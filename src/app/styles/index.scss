@@ -1,0 +1,29 @@
+@import "purecss/build/pure";
+@import "purecss/build/menus";
+@import "purecss/build/menus-horizontal";
+@import "purecss/build/grids-responsive";
+
+body,
+html {
+  height: 100%;
+  min-height: 100%;
+  background-color: lightgrey;
+}
+
+#app {
+  min-height: 100%;
+
+  h1 {
+    color: #222222;
+
+    &:hover {
+      color: #ca1010;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
+  section {
+    padding: 1em;
+  }
+}

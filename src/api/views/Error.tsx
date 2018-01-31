@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { HTMLWebsiteProps } from './types';
+import * as React from "react";
+import { IHTMLWebsiteProps } from "./types";
 
-export default class ErrorViewComponent extends React.Component<HTMLWebsiteProps> {
-    render() {
+export class ErrorViewComponent extends React.Component<IHTMLWebsiteProps> {
+    public render() {
         return (
             <html>
                 <head>
@@ -10,9 +10,9 @@ export default class ErrorViewComponent extends React.Component<HTMLWebsiteProps
                     <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
                 </head>
                 <body>
-                    {'Hallo Welt'}
+                    {"Hallo Welt"}
                 </body>
             </html>
-        )
+        );
     }
 }

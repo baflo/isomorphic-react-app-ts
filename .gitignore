@@ -1,3 +1,5 @@
+*.d.ts
+!**/@types/**/*.d.ts
 node_modules/
 bundles
-workspace.code-workspace/
+workspace.code-workspace
