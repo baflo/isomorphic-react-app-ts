@@ -18,6 +18,7 @@ Another React app boilerplate. The two most important are that everything is in 
 - [ ] Redux
 - [ ] React Router 4, ReactRouterRedux 5
 - [ ] Redux-Forms
+- [ ] Socket.io
 
 ## Improvements needed
 
