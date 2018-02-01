@@ -11,13 +11,13 @@ Another React app boilerplate. The two most important are that everything is in 
 
 ## Wishlist
 
-[x] Hot Module Replacement for both client and server side
-[ ] Provide default work flow for server side HMR import
-[x] CSS Modules
-[ ] Builtin i18n support
-[ ] Redux
-[ ] React Router 4, ReactRouterRedux 5
-[ ] Redux-Forms
+- [x] Hot Module Replacement for both client and server side
+- [ ] Provide default work flow for server side HMR import
+- [x] CSS Modules
+- [ ] Builtin i18n support
+- [ ] Redux
+- [ ] React Router 4, ReactRouterRedux 5
+- [ ] Redux-Forms
 
 ## Improvements needed
 
