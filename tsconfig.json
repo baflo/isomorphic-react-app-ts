@@ -20,9 +20,9 @@
         "strictNullChecks": true,
         "suppressImplicitAnyIndexErrors": true,
         "noUnusedLocals": true,
-        "baseUrl": ".",
+        "baseUrl": "./src",
         "paths": {
-            "@app/*": ["src/app/*"]
+            "@app/*": ["app/*"]
         }
     },
     "include": [

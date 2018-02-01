@@ -4,6 +4,8 @@ import * as responsiveImage from "./responsive.jpg";
 import * as styles from "./root-component.scss";
 import * as sunny from "./sunny.png";
 
+import { ResponsiveImage } from "@app/base/responsive-image/responsive-image.component";
+
 import { ComicSans } from "../comic-sans/comic-sans.component";
 import { GreenParagraphComponent } from "../green-paragraph/green-paragraph-component";
 import { RedParagraphComponent } from "../red-paragraph/red-paragraph-component";
@@ -65,11 +67,7 @@ export default class App extends React.Component<{}, { color: string }> {
 
                     <section style={{ textAlign: "center" }}>
                         <div style={{ display: "inline-block", maxWidth: "500px" }}>
-                            <img
-                                className="pure-img"
-                                src={responsiveImage}
-                                srcSet={responsiveImage.srcSet}
-                            />
+                            <ResponsiveImage {...responsiveImage} />
                         </div>
                     </section>
                 </div>

@@ -1,3 +1,5 @@
+const path = require("path");
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const webpack = require("webpack");
 const WebpackExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -31,6 +33,15 @@ const commonConfig = {
 	resolve: {
 		// Add `.ts` and `.tsx` as a resolvable extension.
 		extensions: [".ts", ".tsx", ".js"],
+		plugins: [
+			new TsConfigPathsPlugin({
+				tsconfig: path.join(__dirname, '../tsconfig.json'),
+				baseUrl: path.join(
+					__dirname, '..',
+					require('../tsconfig.json').compilerOptions.baseUrl
+				),
+			}),
+		]
 	},
 	module: {
 		rules: [
