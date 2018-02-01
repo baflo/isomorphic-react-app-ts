@@ -8,7 +8,7 @@ const TYPINGS_DIR = path.join(__dirname, "../src/@types");
 
 const SERVER_OUTPUT_PATH = path.join(__dirname, "../bundles/server");
 const CLIENT_OUTPUT_PATH = path.join(__dirname, "../bundles/client");
-const PUBLIC_PATH = "/assets";
+const PUBLIC_PATH = "/assets/";
 
 const PUBLIC_STYLE_FILE = path.resolve(SERVER_OUTPUT_PATH, path.join(CLIENT_OUTPUT_PATH, "styles.css"));
 

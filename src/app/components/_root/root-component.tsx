@@ -1,8 +1,10 @@
 import * as React from "react";
 
+import * as responsiveImage from "./responsive.jpg";
 import * as styles from "./root-component.scss";
 import * as sunny from "./sunny.png";
 
+import { ComicSans } from "../comic-sans/comic-sans.component";
 import { GreenParagraphComponent } from "../green-paragraph/green-paragraph-component";
 import { RedParagraphComponent } from "../red-paragraph/red-paragraph-component";
 
@@ -51,6 +53,24 @@ export default class App extends React.Component<{}, { color: string }> {
 
                         <RedParagraphComponent />
                         <GreenParagraphComponent />
+
+                        <ComicSans>
+                            {"Some comical fonts."}
+                        </ComicSans>
+                    </section>
+
+                    <section className={styles.loadable}>
+                        {"Something loading"}
+                    </section>
+
+                    <section style={{ textAlign: "center" }}>
+                        <div style={{ display: "inline-block", maxWidth: "500px" }}>
+                            <img
+                                className="pure-img"
+                                src={responsiveImage}
+                                srcSet={responsiveImage.srcSet}
+                            />
+                        </div>
                     </section>
                 </div>
                 <div className={"pure-u-1 pure-u-md-4-24"} />

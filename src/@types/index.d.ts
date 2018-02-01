@@ -16,17 +16,17 @@ declare module "*.scss" {
 }
 
 declare module "*.png" {
-	const fn: string;
+	const fn: string & { src: string, srcSet: string };
 	export = fn;
 }
 
 declare module "*.jpg" {
-	const fn: string;
+	const fn: string & { src: string, srcSet: string };
 	export = fn;
 }
 
 declare module "*.jpeg" {
-	const fn: string;
+	const fn: string & { src: string, srcSet: string };
 	export = fn;
 }
 
