@@ -27,22 +27,6 @@ const clientConfig = {
 		libraryTarget: "umd",
 	},
 	plugins: [],
-	module: {
-		rules: [
-			{
-				test: /\.(?:jpg|jpeg|png|gif|svg)$/i,
-				include: SOURCE_ROOT,
-				use: [
-					{
-						loader: "file-loader",
-						options: {
-							name: "[hash].[ext]",
-						}
-					}
-				]
-			}
-		],
-	},
 	devServer: {
 		contentBase: CLIENT_OUTPUT_PATH,
 		watchContentBase: true,

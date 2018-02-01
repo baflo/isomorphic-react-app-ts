@@ -42,6 +42,34 @@ const commonConfig = {
 				include: SOURCE_ROOT,
 				loader: "awesome-typescript-loader"
 			},
+			{
+				test: /\.(gif|eot|svg|ttf|woff|woff2)$/i,
+				include: SOURCE_ROOT,
+				use: [
+					{
+						loader: "url-loader",
+						options: {
+							limit: 8192,
+							fallback: "file-loader",
+							name: "[name].[hash].[ext]",
+						}
+					}
+				]
+			},
+			{
+				test: /\.(png|jpg|jpeg)$/i,
+				include: SOURCE_ROOT,
+				use: [
+					{
+						loader: "responsive-loader",
+						options: {
+							sizes: [300, 600, 1200, 2000],
+							placeholder: true,
+							placeholderSize: 20,
+						}
+					}
+				]
+			},
 		]
 	}
 };

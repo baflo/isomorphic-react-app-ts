@@ -60,21 +60,6 @@ const serverConfig = {
 			]
 		}),
 	],
-	module: {
-		rules: [
-			{
-				test: /\.(?:jpg|jpeg|png|gif|svg)$/i,
-				use: [
-					{
-						loader: "file-loader",
-						options: {
-							emitFile: false,
-						}
-					}
-				]
-			}
-		],
-	}
 };
 
 module.exports = webpackMerge(commonConfig, serverConfig);

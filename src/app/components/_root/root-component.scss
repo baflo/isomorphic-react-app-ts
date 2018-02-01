@@ -8,3 +8,9 @@
   background-color: white;
   min-height: 100vh;
 }
+
+.loadable {
+  background-image: url(./loader.gif);
+  background-position: center;
+  background-repeat: no-repeat;
+}
