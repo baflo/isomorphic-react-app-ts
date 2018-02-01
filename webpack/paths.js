@@ -4,7 +4,7 @@ const SOURCE_ROOT = path.join(__dirname, "../src");
 const CLIENT_ENTRY_FILE = path.join(__dirname, "../src/app-client.tsx");
 const SERVER_ENTRY_FILE = path.join(__dirname, "../src/api-server.tsx");
 const GLOBAL_STYLE_FILE = path.join(__dirname, "../src/app/styles/index.scss");
-
+const TYPINGS_DIR = path.join(__dirname, "../src/@types");
 
 const SERVER_OUTPUT_PATH = path.join(__dirname, "../bundles/server");
 const CLIENT_OUTPUT_PATH = path.join(__dirname, "../bundles/client");

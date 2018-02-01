@@ -1,6 +1,10 @@
 import * as React from "react";
-import * as s from "./root-component.scss";
+
+import * as styles from "./root-component.scss";
 import * as sunny from "./sunny.png";
+
+import { GreenParagraphComponent } from "../green-paragraph/green-paragraph-component";
+import { RedParagraphComponent } from "../red-paragraph/red-paragraph-component";
 
 export default class App extends React.Component<{}, { color: string }> {
     public state = {
@@ -21,7 +25,7 @@ export default class App extends React.Component<{}, { color: string }> {
         return (
             <div className={"pure-g"}>
                 <div className={"pure-u-1 pure-u-md-4-24"} />
-                <div className={`pure-u-1 pure-u-md-16-24 ${s.main}`}>
+                <div className={`pure-u-1 pure-u-md-16-24 ${styles.main}`}>
                     <div className={"pure-menu pure-menu-horizontal"}>
                         <a href="#" className={"pure-menu-heading pure-menu-link"}>
                             <img src={sunny} className="pure-img" />
@@ -45,9 +49,8 @@ export default class App extends React.Component<{}, { color: string }> {
                             {"A test page"}
                         </h1>
 
-                        <div className={s.test}>
-                            {"This is some more text"}
-                        </div>
+                        <RedParagraphComponent />
+                        <GreenParagraphComponent />
                     </section>
                 </div>
                 <div className={"pure-u-1 pure-u-md-4-24"} />

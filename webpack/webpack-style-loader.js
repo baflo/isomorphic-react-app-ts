@@ -14,7 +14,7 @@ function styleLoader(WebpackExtractTextPlugin, config = {}) {
 
 	if (cssModules) {
 		extractPluginUsedLoaders.push({
-			loader: "css-loader",
+			loader: "typings-for-css-modules-loader",
 			options: {
 				alias: {
 					"../fonts": "bootstrap/fonts",
@@ -24,6 +24,7 @@ function styleLoader(WebpackExtractTextPlugin, config = {}) {
 				modules: cssModules,
 				camelCase: true,
 				localIdentName: cssMinimize ? "[hash:12]" : "[local]____[path][name]____[hash:base64:5]",
+				namedExport: true,
 			}
 		});
 	}
