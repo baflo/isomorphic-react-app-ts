@@ -1,5 +1,5 @@
 import * as React from "react";
-import App from "./components/_root/root-component";
+import App from "./components/_root/root.component";
 
 interface IAppProps {
     state?: any;
