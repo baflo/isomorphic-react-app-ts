@@ -1,3 +1,5 @@
+declare const PUBLIC_PATH: string;
+declare const REACT_LOADABLE_STATS_PATH: string;
 declare const GLOBAL_ASSETS_PATH: string;
 declare const GLOBAL_SSR_ENABLED: boolean;
 

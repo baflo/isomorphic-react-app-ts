@@ -1,28 +1,23 @@
 import React from "react";
-import loadable, { OptionsWithRender } from "react-loadable";
+import { LoadingComponentProps } from "react-loadable";
 import styles from "./loading.component.scss";
 
-const Loading = () => (
-    <div className={styles.loading}>
-        {"Something's loading."}
-    </div>
-);
-
-interface ILoadingComponentAsChild {
-    children: OptionsWithRender<any, any>["loader"];
-}
-
-interface ILoadingComponentAsParameter {
-    loader: OptionsWithRender<any, any>["loader"];
-}
-
-type ILoadingComponent = ILoadingComponentAsChild | ILoadingComponentAsParameter;
-
-export const LoadingComponent = (props: ILoadingComponent) => {
-    const LoadableComponent = loadable({
-        loader: (props as ILoadingComponentAsChild).children || (props as ILoadingComponentAsParameter).loader,
-        loading: Loading,
-    });
-
-    return <LoadableComponent />;
+export const LoadingComponent = (props: LoadingComponentProps) => {
+    if (props.error) {
+        return (
+            <div className={styles.error}>
+                {"Loading failed."}
+            </div>
+        );
+    } else if (props.timedOut) {
+        return <div>Taking a long time...</div>;
+    } else if (props.pastDelay) {
+        return (
+            <div className={styles.loading}>
+                {"Something's loading."}
+            </div>
+        );
+    } else {
+        return null;
+    }
 };

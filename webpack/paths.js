@@ -10,6 +10,7 @@ const SERVER_OUTPUT_PATH = path.join(__dirname, "../bundles/server");
 const CLIENT_OUTPUT_PATH = path.join(__dirname, "../bundles/client");
 const PUBLIC_PATH = "/assets/";
 
+const REACT_LOADABLE_STATS_PATH = path.join(SERVER_OUTPUT_PATH, "./react-loadable.json");
 const PUBLIC_STYLE_FILE = path.resolve(SERVER_OUTPUT_PATH, path.join(CLIENT_OUTPUT_PATH, "styles.css"));
 
 module.exports = {
@@ -21,4 +22,5 @@ module.exports = {
 	CLIENT_OUTPUT_PATH,
 	PUBLIC_PATH,
 	PUBLIC_STYLE_FILE,
+	REACT_LOADABLE_STATS_PATH,
 };

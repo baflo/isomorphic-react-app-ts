@@ -5,6 +5,7 @@ const WebpackExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const {
 	GLOBAL_STYLE_FILE,
+	CLIENT_OUTPUT_PATH,
 	SOURCE_ROOT,
 	PUBLIC_STYLE_FILE,
 	TYPINGS_DIR,
@@ -22,6 +23,10 @@ const commonConfig = {
 			"NODE_ENV",
 			"DEBUG",
 		]),
+		new webpack.DefinePlugin({
+			"GLOBAL_ASSETS_PATH":
+				JSON.stringify(CLIENT_OUTPUT_PATH),
+		}),
 		new WebpackExtractTextPlugin("../client/styles.css", {
 			allChunks: true,
 		}),

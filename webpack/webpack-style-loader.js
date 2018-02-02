@@ -59,8 +59,9 @@ function styleLoader(WebpackExtractTextPlugin, config = {}) {
 		include,
 		exclude,
 		use: WebpackExtractTextPlugin.extract({
-			fallback: "style-loader",
-			use: extractPluginUsedLoaders
+			// fallback: "style-loader",
+			use: extractPluginUsedLoaders,
+			allChunks: true
 		})
 	}
 };

@@ -1,6 +1,7 @@
 // import * as fs from "fs";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
+import loadable from "react-loadable";
 import restify from "restify";
 
 import { AppRoot } from "./app";
@@ -33,12 +34,10 @@ function createAPIServer() {
 
     server.get(/\/.*/, async (req, res, next) => {
         const htmlString = ReactDOMServer.renderToString((
-            <MainViewComponent title="Good Day.">
-                {
-                    GLOBAL_SSR_ENABLED &&
-                    <AppRoot />
-                }
-            </MainViewComponent>
+            <MainViewComponent
+                title="Good Day."
+                App={GLOBAL_SSR_ENABLED ? AppRoot : undefined}
+            />
         ));
 
         res.end(`<!DOCTYPE html>${htmlString}`);
@@ -47,6 +46,11 @@ function createAPIServer() {
     return server;
 }
 
-createAPIServer().listen(8080, (err: Error) => {
-    console.log("Started server."); // tslint:disable-line
-});
+loadable.preloadAll().then(() => {
+    createAPIServer().listen(8080, (err: Error) => {
+        console.log("Started server."); // tslint:disable-line
+    });
+})
+    .catch((error) => {
+        console.error("Failed to preload components:", error); // tslint:disable-line
+    });

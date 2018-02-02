@@ -1,4 +1,5 @@
 import React from "react";
+import loadable from "react-loadable";
 
 import responsiveImage from "./responsive.jpg";
 import styles from "./root.component.scss";
@@ -7,6 +8,11 @@ import { LoadingComponent } from "../base/loading/loading.component";
 import { ResponsiveImage } from "../base/responsive-image/responsive-image.component";
 import { GreenParagraphComponent } from "../green-paragraph/green-paragraph.component";
 import { RedParagraphComponent } from "../red-paragraph/red-paragraph.component";
+
+const Comical = loadable({
+    loader: () => import("../comical/comical.component").then((p) => p.Comical),
+    loading: LoadingComponent,
+});
 
 export default class App extends React.Component<{}, { color: string }> {
     constructor(props: {}) {
@@ -46,16 +52,9 @@ export default class App extends React.Component<{}, { color: string }> {
                     </section>
 
                     <section>
-                        <LoadingComponent>
-                            {
-                                () => import("../comical/comical.component")
-                                    .then(({ Comical }) => () => (
-                                        <Comical>
-                                            {"Some comical font."}
-                                        </Comical>
-                                    ))
-                            }
-                        </LoadingComponent>
+                        <Comical>
+                            {"Hallo Welt"}
+                        </Comical>
                     </section>
 
                     <section style={{ textAlign: "center" }}>
