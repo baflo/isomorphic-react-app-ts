@@ -1,5 +1,7 @@
 import React from "react";
 import loadable from "react-loadable";
+import { Route, Switch, RouteComponentProps } from "react-router";
+import { NavLink } from "react-router-dom";
 
 import responsiveImage from "./responsive.jpg";
 import styles from "./root.component.scss";
@@ -25,22 +27,30 @@ export default class App extends React.Component<{}, { color: string }> {
                 <div className={"pure-u-1 pure-u-md-4-24"} />
                 <div className={`pure-u-1 pure-u-md-16-24 ${styles.main}`}>
                     <div className={"pure-menu pure-menu-horizontal"}>
-                        <a href="#" className={"pure-menu-heading pure-menu-link"}>
+                        <NavLink to="/" className={"pure-menu-heading pure-menu-link"}>
                             <ResponsiveImage {...require("./sunny.png?size=30")} />
-                        </a>
+                        </NavLink>
 
                         <ul className={"pure-menu-list"}>
                             <li className={"pure-menu-item"}>
-                                <a href="#" className={"pure-menu-link"}>{"Home"}</a>
+                                <NavLink to="/Home" className={"pure-menu-link"}>{"Home"}</NavLink>
                             </li>
                             <li className={"pure-menu-item"}>
-                                <a href="#" className={"pure-menu-link"}>{"Test"}</a>
+                                <NavLink to="/Test" className={"pure-menu-link"}>{"Test"}</NavLink>
                             </li>
                             <li className={"pure-menu-item"}>
-                                <a href="#" className={"pure-menu-link"}>{"Guestbook"}</a>
+                                <NavLink to="/Guestbook" className={"pure-menu-link"}>{"Guestbook"}</NavLink>
                             </li>
                         </ul>
                     </div>
+
+                    <section>
+                        <Switch>
+                            <Route path="/:name" component={(props: RouteComponentProps<any>) => (
+                                <div>{props.match.params.name}</div>
+                            )} />
+                        </Switch>
+                    </section>
 
                     <section>
                         <h1>

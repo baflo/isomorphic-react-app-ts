@@ -1,4 +1,5 @@
 export interface IHTMLWebsiteProps {
+    appString: string;
     title: string;
-    App?: React.ComponentType;
+    extraScripts?: string[];
 }

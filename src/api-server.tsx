@@ -1,13 +1,17 @@
-// import * as fs from "fs";
+import * as fs from "fs-extra";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
-import loadable from "react-loadable";
+import loadable, { Capture as LoadableCapture } from "react-loadable";
+import { StaticRouter } from "react-router";
 import restify from "restify";
 
 import { AppRoot } from "./app";
 
 // import * as ErrorView from "./api/views/Error";
 import * as MainView from "./api/views/Main";
+
+const { getBundles } = require("react-loadable/webpack"); // tslint:disable-line
+const loadableStats = fs.readJSONSync(REACT_LOADABLE_STATS_PATH);
 
 let { MainViewComponent } = MainView;
 // let { ErrorViewComponent } = ErrorView;
@@ -33,10 +37,26 @@ function createAPIServer() {
     }));
 
     server.get(/\/.*/, async (req, res, next) => {
-        const htmlString = ReactDOMServer.renderToString((
+        const modules: string[] = [];
+        let app = "";
+
+        if (true || GLOBAL_SSR_ENABLED) {
+            app = ReactDOMServer.renderToString((
+                <StaticRouter context={{}} location={req.url}>
+                    <LoadableCapture report={(moduleName) => modules.push(moduleName)}>
+                        <AppRoot />
+                    </LoadableCapture>
+                </StaticRouter>
+            ));
+        }
+
+        const htmlString = ReactDOMServer.renderToStaticMarkup((
             <MainViewComponent
+                appString={app}
+                extraScripts={getBundles(loadableStats, modules).map((
+                    (bundle: { file: string }) => `${PUBLIC_PATH}${bundle.file}`
+                ))}
                 title="Good Day."
-                App={GLOBAL_SSR_ENABLED ? AppRoot : undefined}
             />
         ));
 
