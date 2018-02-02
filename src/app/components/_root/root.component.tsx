@@ -3,8 +3,8 @@ import React from "react";
 import responsiveImage from "./responsive.jpg";
 import styles from "./root.component.scss";
 
+import { LoadingComponent } from "../base/loading/loading.component";
 import { ResponsiveImage } from "../base/responsive-image/responsive-image.component";
-import { Comical } from "../comical/comical.component";
 import { GreenParagraphComponent } from "../green-paragraph/green-paragraph.component";
 import { RedParagraphComponent } from "../red-paragraph/red-paragraph.component";
 
@@ -43,14 +43,19 @@ export default class App extends React.Component<{}, { color: string }> {
 
                         <RedParagraphComponent />
                         <GreenParagraphComponent />
-
-                        <Comical>
-                            {"Some comical fonts."}
-                        </Comical>
                     </section>
 
-                    <section className={styles.loadable}>
-                        {"Something loading"}
+                    <section>
+                        <LoadingComponent>
+                            {
+                                () => import("../comical/comical.component")
+                                    .then(({ Comical }) => () => (
+                                        <Comical>
+                                            {"Some comical font."}
+                                        </Comical>
+                                    ))
+                            }
+                        </LoadingComponent>
                     </section>
 
                     <section style={{ textAlign: "center" }}>

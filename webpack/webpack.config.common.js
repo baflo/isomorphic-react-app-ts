@@ -51,7 +51,12 @@ const commonConfig = {
 			{
 				test: /\.tsx?$/,
 				include: SOURCE_ROOT,
-				loader: "awesome-typescript-loader"
+				use: [{
+					loader: "awesome-typescript-loader",
+					options: {
+						useBabel: true
+					}
+				}]
 			},
 			{
 				test: /\.(gif|eot|svg|ttf|woff|woff2)$/i,

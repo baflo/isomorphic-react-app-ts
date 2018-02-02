@@ -21,6 +21,7 @@ const clientConfig = {
 	},
 	output: {
 		filename: "[name].js",
+		chunkFilename: '[name].bundle.js',
 		path: CLIENT_OUTPUT_PATH,
 		publicPath: PUBLIC_PATH,
 		library: ["IRA", "[name]"],
