@@ -1,7 +1,7 @@
 // import * as fs from "fs";
-import * as React from "react";
-import * as ReactDOMServer from "react-dom/server";
-import * as restify from "restify";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+import restify from "restify";
 
 import { AppRoot } from "./app";
 

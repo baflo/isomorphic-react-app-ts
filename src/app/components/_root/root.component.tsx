@@ -1,10 +1,10 @@
-import * as React from "react";
+import React from "react";
 
-import * as responsiveImage from "./responsive.jpg";
-import * as styles from "./root.component.scss";
+import responsiveImage from "./responsive.jpg";
+import styles from "./root.component.scss";
 
 import { ResponsiveImage } from "../base/responsive-image/responsive-image.component";
-import { ComicSans } from "../comic-sans/comic-sans.component";
+import { Comical } from "../comical/comical.component";
 import { GreenParagraphComponent } from "../green-paragraph/green-paragraph.component";
 import { RedParagraphComponent } from "../red-paragraph/red-paragraph.component";
 
@@ -20,7 +20,7 @@ export default class App extends React.Component<{}, { color: string }> {
                 <div className={`pure-u-1 pure-u-md-16-24 ${styles.main}`}>
                     <div className={"pure-menu pure-menu-horizontal"}>
                         <a href="#" className={"pure-menu-heading pure-menu-link"}>
-                            <ResponsiveImage {...require("./sunny.png?size=30") } />
+                            <ResponsiveImage {...require("./sunny.png?size=30")} />
                         </a>
 
                         <ul className={"pure-menu-list"}>
@@ -44,9 +44,9 @@ export default class App extends React.Component<{}, { color: string }> {
                         <RedParagraphComponent />
                         <GreenParagraphComponent />
 
-                        <ComicSans>
+                        <Comical>
                             {"Some comical fonts."}
-                        </ComicSans>
+                        </Comical>
                     </section>
 
                     <section className={styles.loadable}>
