@@ -8,6 +8,7 @@ const { ReactLoadablePlugin } = require("react-loadable/webpack");
 
 const {
 	GLOBAL_STYLE_FILE,
+	APP_ROOT_FILE,
 	SERVER_ENTRY_FILE,
 	SERVER_OUTPUT_PATH,
 	PUBLIC_PATH,
@@ -17,7 +18,6 @@ const {
 const commonConfig = require("./webpack.config.common");
 
 const serverConfig = {
-	watch: true,
 	target: "node",
 	node: {
 		__dirname: false,
@@ -26,8 +26,17 @@ const serverConfig = {
 	entry: {
 		"api-server": [
 			"webpack/hot/poll?1000",
+			"babel-polyfill",
+			"react-hot-loader/patch",
 			GLOBAL_STYLE_FILE,
 			SERVER_ENTRY_FILE
+		],
+		"app-root": [
+			"webpack/hot/poll?1000",
+			"babel-polyfill",
+			"react-hot-loader/patch",
+			GLOBAL_STYLE_FILE,
+			APP_ROOT_FILE
 		],
 	},
 	output: {
@@ -49,20 +58,16 @@ const serverConfig = {
 			"GLOBAL_SSR_ENABLED":
 				JSON.stringify(process.env.NODE_ENV !== "development"),
 		}),
-		// new WebpackExtractTextPlugin({
-		// 	filename: `${"C:\Users\fbachmann\Documents\workspace_web\isomorphic-react-app-ts\bundles\client\styles.css"}`,
-		// 	allChunks: true,
-		// }),
 		new webpack.HotModuleReplacementPlugin({ quiet: true }),
 		new WebpackStartServerPlugin({
 			name: "api-server.js",
-			// nodeArgs: ['--inspect'], // allow debugging		
+			// nodeArgs: ["--inspect"], // allow debugging
 		}),
 	],
 	externals: [
 		webpackNodeExternals({
 			whitelist: [
-				'webpack/hot/poll?1000',
+				"webpack/hot/poll?1000",
 				/^purecss/,
 			]
 		}),

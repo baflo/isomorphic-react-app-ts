@@ -27,7 +27,7 @@ const commonConfig = {
 			"GLOBAL_ASSETS_PATH":
 				JSON.stringify(CLIENT_OUTPUT_PATH),
 		}),
-		new WebpackExtractTextPlugin("../client/styles.css", {
+		new WebpackExtractTextPlugin("./styles.css", {
 			allChunks: true,
 		}),
 		new webpack.NamedModulesPlugin(),

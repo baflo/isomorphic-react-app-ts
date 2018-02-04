@@ -16,6 +16,8 @@ export class MainViewComponent extends React.Component<IHTMLWebsiteProps> {
                         id={"app"}
                     />
 
+                    <script src="/assets/commons.js" />
+                    <script src="/assets/app-root.js" />
                     <script src="/assets/app-client.js" />
                     {
                         this.props.extraScripts!.map((

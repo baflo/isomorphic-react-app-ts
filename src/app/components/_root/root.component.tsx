@@ -12,7 +12,8 @@ import { GreenParagraphComponent } from "../green-paragraph/green-paragraph.comp
 import { RedParagraphComponent } from "../red-paragraph/red-paragraph.component";
 
 const Comical = loadable({
-    loader: () => import("../comical/comical.component").then((p) => p.Comical),
+    loader: () => import("../comical/comical.component")
+        .then((p) => p.Comical),
     loading: LoadingComponent,
 });
 
@@ -63,7 +64,7 @@ export default class App extends React.Component<{}, { color: string }> {
 
                     <section>
                         <Comical>
-                            {"Hallo Welt"}
+                            {"Hello World"}
                         </Comical>
                     </section>
 

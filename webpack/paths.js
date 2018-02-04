@@ -1,13 +1,15 @@
 const path = require("path");
 
 const SOURCE_ROOT = path.join(__dirname, "../src");
-const CLIENT_ENTRY_FILE = path.join(__dirname, "../src/app-client.tsx");
-const SERVER_ENTRY_FILE = path.join(__dirname, "../src/api-server.tsx");
-const GLOBAL_STYLE_FILE = path.join(__dirname, "../src/app/styles/index.scss");
-const TYPINGS_DIR = path.join(__dirname, "../src/@types");
+const APP_ROOT_FILE = path.join(SOURCE_ROOT, "./app/index.tsx");
+const CLIENT_ENTRY_FILE = path.join(SOURCE_ROOT, "./app-client.tsx");
+const SERVER_ENTRY_FILE = path.join(SOURCE_ROOT, "./api-server.tsx");
+const GLOBAL_STYLE_FILE = path.join(SOURCE_ROOT, "./app/styles/index.scss");
+const TYPINGS_DIR = path.join(SOURCE_ROOT, "./@types");
 
-const SERVER_OUTPUT_PATH = path.join(__dirname, "../bundles/server");
-const CLIENT_OUTPUT_PATH = path.join(__dirname, "../bundles/client");
+const OUTPUT_ROOT = path.join(__dirname, "../bundles");
+const SERVER_OUTPUT_PATH = path.join(OUTPUT_ROOT, "./server");
+const CLIENT_OUTPUT_PATH = path.join(OUTPUT_ROOT, "./client");
 const PUBLIC_PATH = "/assets/";
 
 const REACT_LOADABLE_STATS_PATH = path.join(SERVER_OUTPUT_PATH, "./react-loadable.json");
@@ -15,6 +17,7 @@ const PUBLIC_STYLE_FILE = path.resolve(SERVER_OUTPUT_PATH, path.join(CLIENT_OUTP
 
 module.exports = {
 	SOURCE_ROOT,
+	APP_ROOT_FILE,
 	CLIENT_ENTRY_FILE,
 	SERVER_ENTRY_FILE,
 	GLOBAL_STYLE_FILE,
