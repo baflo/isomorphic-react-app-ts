@@ -21,11 +21,6 @@ const clientConfig = {
 			GLOBAL_STYLE_FILE,
 			CLIENT_ENTRY_FILE
 		],
-		"app-root": [
-			"babel-polyfill",
-			GLOBAL_STYLE_FILE,
-			APP_INDEX_FILE
-		],
 	},
 	output: {
 		filename: "[name].js",
@@ -41,7 +36,6 @@ const clientConfig = {
 		}),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: "commons",
-			minChunks: Infinity
 		}),
 	],
 	devServer: {

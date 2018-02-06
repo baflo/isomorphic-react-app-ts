@@ -28,10 +28,8 @@ function render() {
     }
 }
 
-(window as any).main = () => {
-    if (typeof document !== "undefined") {
-        preloadReady().then(() => {
-            render();
-        });
-    }
-};
+if (typeof document !== "undefined") {
+    preloadReady().then(() => {
+        render();
+    });
+}

@@ -29,18 +29,16 @@ export class MainViewComponent extends React.Component<IHTMLWebsiteProps> {
                     />
 
                     <script src="/assets/commons.js" />
-                    <script src="/assets/app-root.js" />
-                    <script src="/assets/app-client.js" />
                     {
                         this.props.extraScripts!.map((
                             (path) =>
-                                <script
-                                    key={path}
-                                    src={path}
-                                />
+                            <script
+                            key={path}
+                            src={path}
+                            />
                         ))
                     }
-                    <script dangerouslySetInnerHTML={{ __html: "main();" }} />
+                    <script src="/assets/app-client.js" />
                 </body>
             </html>
         );
