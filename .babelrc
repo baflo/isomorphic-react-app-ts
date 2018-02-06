@@ -15,7 +15,7 @@
   ],
   "plugins": [
     "react-hot-loader/babel",
-    "babel-plugin-syntax-dynamic-import",
+    "dynamic-import-node",
     "react-loadable/babel"
   ]
 }

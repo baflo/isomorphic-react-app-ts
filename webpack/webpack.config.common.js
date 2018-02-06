@@ -1,45 +1,54 @@
 const path = require("path");
-const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const webpack = require("webpack");
 const WebpackExtractTextPlugin = require("extract-text-webpack-plugin");
+const WebpackForkTsCheckerPlugin = require("fork-ts-checker-webpack-plugin");
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 
 const {
-	GLOBAL_STYLE_FILE,
-	CLIENT_OUTPUT_PATH,
-	SOURCE_ROOT,
-	PUBLIC_STYLE_FILE,
-	TYPINGS_DIR,
-} = require("./paths");
+	CONTEXT_PATH,
+	SOURCE_ROOT_PATH, } = require("./paths");
+
+const {
+	cssTypeRegEx,
+	typescriptRegEx,
+	responsiveLoaderRegEx,
+	urlLoaderRegEx } = require("./regex");
+
 const { globalStylesLoader, localStylesLoader } = require("./webpack-style-loader");
 
-process.env.DEBUG = true;
-process.env.NODE_ENV = "development";
-
 const commonConfig = {
-	// context: "/",
-	devtool: "inline-source-map",
+	context: CONTEXT_PATH,
+	devtool: "cheap-module-eval-source-map",
+	watchOptions: {
+		ignored: /node_modules/
+	},
 	plugins: [
 		new webpack.EnvironmentPlugin([
 			"NODE_ENV",
 			"DEBUG",
 		]),
 		new webpack.DefinePlugin({
-			"GLOBAL_ASSETS_PATH":
-				JSON.stringify(CLIENT_OUTPUT_PATH),
+			"CONTEXT_PATH":
+				JSON.stringify(CONTEXT_PATH),
+			"SOURCE_ROOT_PATH":
+				JSON.stringify(SOURCE_ROOT_PATH),
 		}),
 		new WebpackExtractTextPlugin("./styles.css", {
 			allChunks: true,
 		}),
 		new webpack.NamedModulesPlugin(),
-		new webpack.WatchIgnorePlugin([
-			/css\.d\.ts$/
-		]),
+		new webpack.HotModuleReplacementPlugin({ quiet: true }),
+		new WebpackForkTsCheckerPlugin(),
+		new webpack.WatchIgnorePlugin([cssTypeRegEx]),
 	],
 	resolve: {
 		// Add `.ts` and `.tsx` as a resolvable extension.
-		extensions: [".ts", ".tsx", ".js"],
+		extensions: [".js", ".ts", ".tsx"],
+		symlinks: false,
+		cacheWithContext: false,
 		plugins: [
 			new TsConfigPathsPlugin({
+				doTypeCheck: false,
 				tsconfig: path.join(__dirname, '../tsconfig.json'),
 				baseUrl: path.join(
 					__dirname, '..',
@@ -54,8 +63,8 @@ const commonConfig = {
 			localStylesLoader(WebpackExtractTextPlugin),
 			// all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
 			{
-				test: /\.tsx?$/,
-				include: SOURCE_ROOT,
+				test: typescriptRegEx,
+				include: SOURCE_ROOT_PATH,
 				use: [{
 					loader: "awesome-typescript-loader",
 					options: {
@@ -64,22 +73,22 @@ const commonConfig = {
 				}]
 			},
 			{
-				test: /\.(gif|eot|svg|ttf|woff|woff2)$/i,
-				include: SOURCE_ROOT,
+				test: urlLoaderRegEx,
+				include: SOURCE_ROOT_PATH,
 				use: [
 					{
 						loader: "url-loader",
 						options: {
 							limit: 8192,
 							fallback: "file-loader",
-							name: "[name].[hash].[ext]",
+							name: "[path]___[name].[ext]",
 						}
 					}
 				]
 			},
 			{
-				test: /\.(png|jpg|jpeg)$/i,
-				include: SOURCE_ROOT,
+				test: responsiveLoaderRegEx,
+				include: SOURCE_ROOT_PATH,
 				use: [
 					{
 						loader: "responsive-loader",
@@ -92,7 +101,7 @@ const commonConfig = {
 				]
 			},
 		]
-	}
+	},
 };
 
 module.exports = commonConfig;

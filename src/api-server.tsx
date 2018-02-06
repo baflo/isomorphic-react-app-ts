@@ -1,26 +1,40 @@
-import restify from "restify";
 import loadable from "react-loadable";
+import restify, { Server } from "restify";
 
 import * as apiModule from "./api";
 
 let { createAPI } = apiModule;
-if ((module as any).hot) {
-    const accept = (module as any).hot.accept;
+if (module.hot) {
+    const accept = module.hot.accept;
 
-    accept("./api", () => {
+    // TODO: Find out why root-relative path is necessary in first module
+    accept("./src/api/index.tsx", () => {
         createAPI = require("./api").createAPI;
+
+        server.close(() => {
+            startServer();
+        });
     });
+
+    startServer();
 }
 
-loadable.preloadAll().then(() => {
-    const server = restify.createServer();
+let server: Server;
+function startServer() {
+    loadable.preloadAll().then(() => {
+        server = restify.createServer();
 
-    createAPI(server);
+        createAPI(server);
 
-    server.listen(8080, (err: Error) => {
-        console.log("Started server."); // tslint:disable-line
-    });
-})
-    .catch((error) => {
-        console.error("Failed to preload components:", error); // tslint:disable-line
-    });
+        server.listen(8080, (err: Error) => {
+            console.log("Started server."); // tslint:disable-line
+
+            if (typeof process.send === "function") {
+                process.send("ready");
+            }
+        });
+    })
+        .catch((error) => {
+            console.error("Failed to preload components:", error); // tslint:disable-line
+        });
+}

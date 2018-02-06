@@ -4,8 +4,9 @@
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "outDir": "dist",
+        "target": "es6",
         "module": "esnext",
-        "target": "esnext",
+        "moduleResolution": "node",
         "lib": [
             "es6",
             "dom"
@@ -13,7 +14,6 @@
         "sourceMap": true,
         "allowJs": true,
         "jsx": "react",
-        "moduleResolution": "node",
         "rootDir": "src",
         "forceConsistentCasingInFileNames": true,
         "noImplicitReturns": true,

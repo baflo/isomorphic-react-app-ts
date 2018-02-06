@@ -1,12 +1,13 @@
 import React from "react";
+import { hot } from "react-hot-loader";
 import loadable from "react-loadable";
-import { Route, Switch, RouteComponentProps } from "react-router";
+import { Route, RouteComponentProps, Switch } from "react-router";
 import { NavLink } from "react-router-dom";
 
 import responsiveImage from "./responsive.jpg";
 import styles from "./root.component.scss";
 
-import { LoadingComponent } from "../base/loading/loading.component";
+import { LoadingComponent } from "@app/components/base/loading/loading.component";
 import { ResponsiveImage } from "../base/responsive-image/responsive-image.component";
 import { GreenParagraphComponent } from "../green-paragraph/green-paragraph.component";
 import { RedParagraphComponent } from "../red-paragraph/red-paragraph.component";
@@ -17,7 +18,7 @@ const Comical = loadable({
     loading: LoadingComponent,
 });
 
-export default class App extends React.Component<{}, { color: string }> {
+export class RootComponent extends React.Component<{}, { color: string }> {
     constructor(props: {}) {
         super(props);
     }
@@ -79,3 +80,5 @@ export default class App extends React.Component<{}, { color: string }> {
         );
     }
 }
+
+export const HotRootComponent = hot(module)(RootComponent);

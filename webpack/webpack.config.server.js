@@ -1,21 +1,32 @@
+const fs = require("fs-extra");
 const path = require("path");
 const webpack = require("webpack");
 const webpackMerge = require("webpack-merge");
-const WebpackExtractTextPlugin = require("extract-text-webpack-plugin");
 const webpackNodeExternals = require("webpack-node-externals");
-const WebpackStartServerPlugin = require("start-server-webpack-plugin");
-const { ReactLoadablePlugin } = require("react-loadable/webpack");
+const WebpackExtractTextPlugin = require("extract-text-webpack-plugin");
+const WebpackIgnoreEmitPlugin = require("ignore-emit-webpack-plugin");
+const WebpackShellPlugin = require("webpack-shell-plugin");
 
 const {
 	GLOBAL_STYLE_FILE,
-	APP_ROOT_FILE,
 	SERVER_ENTRY_FILE,
 	SERVER_OUTPUT_PATH,
+	CLIENT_OUTPUT_PATH,
 	PUBLIC_PATH,
-	PUBLIC_STYLE_FILE,
-	REACT_LOADABLE_STATS_PATH,
-} = require("./paths");
+	REACT_LOADABLE_STATS_PATH, } = require("./paths");
+
+const {
+	cssRegEx,
+	urlLoaderRegEx,
+	responsiveLoaderRegEx } = require("./regex");
+
 const commonConfig = require("./webpack.config.common");
+
+// Whether or not server shall do rendering (not recommended for development)
+const GLOBAL_SSR_ENABLED = process.env.SSR || process.env.NODE_ENV !== "development";
+
+// Create target dir
+fs.ensureDirSync(SERVER_OUTPUT_PATH);
 
 const serverConfig = {
 	target: "node",
@@ -26,44 +37,18 @@ const serverConfig = {
 	entry: {
 		"api-server": [
 			"webpack/hot/poll?1000",
-			"babel-polyfill",
 			"react-hot-loader/patch",
 			GLOBAL_STYLE_FILE,
 			SERVER_ENTRY_FILE
 		],
-		"app-root": [
-			"webpack/hot/poll?1000",
-			"babel-polyfill",
-			"react-hot-loader/patch",
-			GLOBAL_STYLE_FILE,
-			APP_ROOT_FILE
-		],
 	},
 	output: {
+		chunkFilename: "[name].server.js",
 		filename: "[name].js",
-		chunkFilename: "[name].bundle.js",
+		libraryTarget: "umd",
 		path: SERVER_OUTPUT_PATH,
 		publicPath: PUBLIC_PATH,
-		libraryTarget: "umd",
 	},
-	plugins: [
-		new ReactLoadablePlugin({
-			filename: path.join(REACT_LOADABLE_STATS_PATH),
-		}),
-		new webpack.DefinePlugin({
-			"PUBLIC_PATH":
-				JSON.stringify(PUBLIC_PATH),
-			"REACT_LOADABLE_STATS_PATH":
-				JSON.stringify(REACT_LOADABLE_STATS_PATH),
-			"GLOBAL_SSR_ENABLED":
-				JSON.stringify(process.env.NODE_ENV !== "development"),
-		}),
-		new webpack.HotModuleReplacementPlugin({ quiet: true }),
-		new WebpackStartServerPlugin({
-			name: "api-server.js",
-			// nodeArgs: ["--inspect"], // allow debugging
-		}),
-	],
 	externals: [
 		webpackNodeExternals({
 			whitelist: [
@@ -72,6 +57,21 @@ const serverConfig = {
 			]
 		}),
 	],
+	plugins: [
+		new webpack.DefinePlugin({
+			"REACT_LOADABLE_STATS_PATH":
+				JSON.stringify(path.relative(SERVER_OUTPUT_PATH, REACT_LOADABLE_STATS_PATH)),
+			"PUBLIC_PATH":
+				JSON.stringify(PUBLIC_PATH),
+			"GLOBAL_SSR_ENABLED":
+				JSON.stringify(GLOBAL_SSR_ENABLED),
+			"GLOBAL_ASSETS_PATH":
+				JSON.stringify(path.relative(SERVER_OUTPUT_PATH, CLIENT_OUTPUT_PATH)),
+		}),
+		new WebpackShellPlugin({
+			onBuildEnd: ['npm run server']
+		}),
+	]
 };
 
 module.exports = webpackMerge(commonConfig, serverConfig);

@@ -1,8 +1,10 @@
 const path = require("path");
+
 const {
-	SOURCE_ROOT,
-	GLOBAL_STYLE_FILE,
-} = require("./paths");
+	SOURCE_ROOT_PATH,
+	GLOBAL_STYLE_FILE, } = require("./paths");
+
+const { cssRegEx } = require("./regex");
 
 function styleLoader(WebpackExtractTextPlugin, config = {}) {
 	const include = config.include || undefined;
@@ -23,7 +25,7 @@ function styleLoader(WebpackExtractTextPlugin, config = {}) {
 				minimize: cssMinimize,
 				modules: cssModules,
 				camelCase: true,
-				localIdentName: cssMinimize ? "[hash:12]" : "[local]____[path][name]____[hash:base64:5]",
+				localIdentName: cssMinimize ? "[hash:12]" : "[local]____[path][name]",
 				namedExport: true,
 			}
 		});
@@ -55,7 +57,7 @@ function styleLoader(WebpackExtractTextPlugin, config = {}) {
 	});
 
 	return {
-		test: /\.s?css$/,
+		test: cssRegEx,
 		include,
 		exclude,
 		use: WebpackExtractTextPlugin.extract({
@@ -68,7 +70,7 @@ function styleLoader(WebpackExtractTextPlugin, config = {}) {
 
 exports.localStylesLoader =
 	(WebpackExtractTextPlugin) => styleLoader(WebpackExtractTextPlugin, {
-		include: [SOURCE_ROOT],
+		include: [SOURCE_ROOT_PATH],
 		exclude: [GLOBAL_STYLE_FILE],
 		cssModules: true,
 	});

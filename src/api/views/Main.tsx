@@ -1,4 +1,5 @@
 import React from "react";
+import { hot } from "react-hot-loader";
 import { IHTMLWebsiteProps } from "./types";
 
 export class MainViewComponent extends React.Component<IHTMLWebsiteProps> {
@@ -9,6 +10,17 @@ export class MainViewComponent extends React.Component<IHTMLWebsiteProps> {
                     <title>{this.props.title}</title>
                     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
                     <link rel="stylesheet" type="text/css" href="/assets/styles.css" />
+                    {
+                        this.props.extraStyles!.filter((n) => n !== "/assets/styles.css").map((
+                            (path) =>
+                                <link
+                                    key={path}
+                                    rel="stylesheet"
+                                    type="text/css"
+                                    href={path}
+                                />
+                        ))
+                    }
                 </head>
                 <body>
                     <div
@@ -34,3 +46,5 @@ export class MainViewComponent extends React.Component<IHTMLWebsiteProps> {
         );
     }
 }
+
+export const HotMainViewComponent = hot(module)(MainViewComponent);

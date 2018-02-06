@@ -1,4 +1,5 @@
 import * as React from "react";
+import { hot } from "react-hot-loader";
 import { IHTMLWebsiteProps } from "./types";
 
 export class ErrorViewComponent extends React.Component<IHTMLWebsiteProps> {
@@ -16,3 +17,5 @@ export class ErrorViewComponent extends React.Component<IHTMLWebsiteProps> {
         );
     }
 }
+
+export const HotErrorViewComponent = hot(module)(ErrorViewComponent);

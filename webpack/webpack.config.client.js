@@ -1,47 +1,52 @@
 const path = require("path");
 const webpack = require("webpack");
-const WebpackExtractTextPlugin = require("extract-text-webpack-plugin");
 const webpackMerge = require("webpack-merge");
+const WebpackExtractTextPlugin = require("extract-text-webpack-plugin");
+const { ReactLoadablePlugin } = require("react-loadable/webpack");
 
 const {
-	SOURCE_ROOT,
+	REACT_LOADABLE_STATS_PATH,
 	GLOBAL_STYLE_FILE,
-	APP_ROOT_FILE,
+	APP_INDEX_FILE,
 	CLIENT_ENTRY_FILE,
 	CLIENT_OUTPUT_PATH,
-	PUBLIC_PATH,
-} = require("./paths");
+	PUBLIC_PATH, } = require("./paths");
+
 const commonConfig = require("./webpack.config.common");
 
 const clientConfig = {
 	entry: {
 		"app-client": [
 			"babel-polyfill",
-			"react-hot-loader/patch",
 			GLOBAL_STYLE_FILE,
 			CLIENT_ENTRY_FILE
 		],
 		"app-root": [
 			"babel-polyfill",
-			"react-hot-loader/patch",
 			GLOBAL_STYLE_FILE,
-			APP_ROOT_FILE
+			APP_INDEX_FILE
 		],
 	},
 	output: {
 		filename: "[name].js",
-		chunkFilename: "[name].bundle.js",
+		chunkFilename: "[name].client.js",
 		path: CLIENT_OUTPUT_PATH,
 		publicPath: PUBLIC_PATH,
 		library: ["IRA", "[name]"],
 		libraryTarget: "umd",
 	},
 	plugins: [
+		new ReactLoadablePlugin({
+			filename: REACT_LOADABLE_STATS_PATH,
+		}),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: "commons",
+			minChunks: Infinity
 		}),
 	],
 	devServer: {
+		hot: true,
+		// inline: true,
 		contentBase: CLIENT_OUTPUT_PATH,
 		watchContentBase: true,
 		watchOptions: {},
