@@ -6,16 +6,23 @@ const {
 
 const { cssRegEx } = require("./regex");
 
-function styleLoader(WebpackExtractTextPlugin, config = {}) {
+function styleLoader(config = {}) {
+	const WebpackExtractTextPlugin = config.WebpackExtractTextPlugin || undefined;
 	const include = config.include || undefined;
 	const exclude = config.exclude || undefined;
 	const cssModules = config.cssModules || false;
 	const cssMinimize = config.cssMinimize || false;
 
-	const extractPluginUsedLoaders = [];
+	const loaders = [];
+
+	if (!WebpackExtractTextPlugin) {
+		loaders.push({
+			loader: "style-loader",
+		})
+	}
 
 	if (cssModules) {
-		extractPluginUsedLoaders.push({
+		loaders.push({
 			loader: "typings-for-css-modules-loader",
 			options: {
 				alias: {
@@ -31,7 +38,7 @@ function styleLoader(WebpackExtractTextPlugin, config = {}) {
 		});
 	}
 	else {
-		extractPluginUsedLoaders.push({
+		loaders.push({
 			loader: "css-loader",
 			options: {
 				importLoaders: 2,
@@ -42,11 +49,11 @@ function styleLoader(WebpackExtractTextPlugin, config = {}) {
 		});
 	}
 
-	extractPluginUsedLoaders.push({
+	loaders.push({
 		loader: "sass-loader",
 	});
 
-	extractPluginUsedLoaders.push({
+	loaders.push({
 		loader: "postcss-loader",
 		options: {
 			parser: "postcss-scss",
@@ -60,23 +67,26 @@ function styleLoader(WebpackExtractTextPlugin, config = {}) {
 		test: cssRegEx,
 		include,
 		exclude,
-		use: WebpackExtractTextPlugin.extract({
-			// fallback: "style-loader",
-			use: extractPluginUsedLoaders,
-			allChunks: true
-		})
+		use: !WebpackExtractTextPlugin
+			? loaders
+			: WebpackExtractTextPlugin.extract({
+				use: loaders,
+				allChunks: true
+			})
 	}
 };
 
 exports.localStylesLoader =
-	(WebpackExtractTextPlugin) => styleLoader(WebpackExtractTextPlugin, {
+	(WebpackExtractTextPlugin) => styleLoader({
+		WebpackExtractTextPlugin,
 		include: [SOURCE_ROOT_PATH],
 		exclude: [GLOBAL_STYLE_FILE],
 		cssModules: true,
 	});
 
 exports.globalStylesLoader =
-	(WebpackExtractTextPlugin) => styleLoader(WebpackExtractTextPlugin, {
+	(WebpackExtractTextPlugin) => styleLoader({
+		WebpackExtractTextPlugin,
 		include: [GLOBAL_STYLE_FILE],
 		cssModules: false,
 	});

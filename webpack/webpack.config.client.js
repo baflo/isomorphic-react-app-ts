@@ -5,6 +5,7 @@ const WebpackExtractTextPlugin = require("extract-text-webpack-plugin");
 const { ReactLoadablePlugin } = require("react-loadable/webpack");
 
 const {
+	SOURCE_ROOT_PATH,
 	REACT_LOADABLE_STATS_PATH,
 	GLOBAL_STYLE_FILE,
 	APP_INDEX_FILE,
@@ -12,6 +13,9 @@ const {
 	CLIENT_OUTPUT_PATH,
 	PUBLIC_PATH, } = require("./paths");
 
+const { typescriptRegEx } = require("./regex");
+
+const { globalStylesLoader, localStylesLoader } = require("./webpack-style-loader");
 const commonConfig = require("./webpack.config.common");
 
 const clientConfig = {
@@ -35,7 +39,8 @@ const clientConfig = {
 			filename: REACT_LOADABLE_STATS_PATH,
 		}),
 		new webpack.optimize.CommonsChunkPlugin({
-			name: "commons",
+			name: "vendor",
+			minChunks: Infinity,
 		}),
 	],
 	devServer: {
@@ -51,7 +56,44 @@ const clientConfig = {
 			secure: false,
 			changeOrigin: true,
 		},
+	},
+	module: {
+		rules: [
+			globalStylesLoader(),
+			localStylesLoader(),
+			// all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
+			{
+				test: typescriptRegEx,
+				include: SOURCE_ROOT_PATH,
+				use: [{
+					loader: "awesome-typescript-loader",
+					options: {
+						useBabel: true,
+						babelOptions: {
+							babelrc: false,
+							presets: [
+								"react",
+								[
+									"env",
+									{
+										modules: false,
+										targets: {
+											browsers: "last 2 chrome versions"
+										}
+									}
+								]
+							],
+							plugins: [
+								"react-hot-loader/babel",
+								"react-loadable/babel",
+								"syntax-dynamic-import",
+							]
+						}
+					}
+				}]
+			},
+		]
 	}
 }
 
-module.exports = webpackMerge(clientConfig, commonConfig);
+module.exports = webpackMerge(clientConfig, commonConfig)

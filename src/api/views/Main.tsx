@@ -9,6 +9,7 @@ export class MainViewComponent extends React.Component<IHTMLWebsiteProps> {
                 <head>
                     <title>{this.props.title}</title>
                     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+                    <script src="/assets/vendor.js" />
                     <link rel="stylesheet" type="text/css" href="/assets/styles.css" />
                     {
                         this.props.extraStyles!.filter((n) => n !== "/assets/styles.css").map((
@@ -28,7 +29,6 @@ export class MainViewComponent extends React.Component<IHTMLWebsiteProps> {
                         id={"app"}
                     />
 
-                    <script src="/assets/commons.js" />
                     {
                         this.props.extraScripts!.map((
                             (path) =>

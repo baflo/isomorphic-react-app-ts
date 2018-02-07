@@ -14,8 +14,6 @@ const {
 	responsiveLoaderRegEx,
 	urlLoaderRegEx } = require("./regex");
 
-const { globalStylesLoader, localStylesLoader } = require("./webpack-style-loader");
-
 const commonConfig = {
 	context: CONTEXT_PATH,
 	devtool: "cheap-module-eval-source-map",
@@ -32,9 +30,6 @@ const commonConfig = {
 				JSON.stringify(CONTEXT_PATH),
 			"SOURCE_ROOT_PATH":
 				JSON.stringify(SOURCE_ROOT_PATH),
-		}),
-		new WebpackExtractTextPlugin("./styles.css", {
-			allChunks: true,
 		}),
 		new webpack.NamedModulesPlugin(),
 		new webpack.HotModuleReplacementPlugin({ quiet: true }),
@@ -59,19 +54,6 @@ const commonConfig = {
 	},
 	module: {
 		rules: [
-			globalStylesLoader(WebpackExtractTextPlugin),
-			localStylesLoader(WebpackExtractTextPlugin),
-			// all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
-			{
-				test: typescriptRegEx,
-				include: SOURCE_ROOT_PATH,
-				use: [{
-					loader: "awesome-typescript-loader",
-					options: {
-						useBabel: true
-					}
-				}]
-			},
 			{
 				test: urlLoaderRegEx,
 				include: SOURCE_ROOT_PATH,

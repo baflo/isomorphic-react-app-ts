@@ -8,6 +8,7 @@ const WebpackIgnoreEmitPlugin = require("ignore-emit-webpack-plugin");
 const WebpackShellPlugin = require("webpack-shell-plugin");
 
 const {
+	SOURCE_ROOT_PATH,
 	GLOBAL_STYLE_FILE,
 	SERVER_ENTRY_FILE,
 	SERVER_OUTPUT_PATH,
@@ -16,10 +17,12 @@ const {
 	REACT_LOADABLE_STATS_PATH, } = require("./paths");
 
 const {
+	typescriptRegEx,
 	cssRegEx,
 	urlLoaderRegEx,
 	responsiveLoaderRegEx } = require("./regex");
 
+const { globalStylesLoader, localStylesLoader } = require("./webpack-style-loader");
 const commonConfig = require("./webpack.config.common");
 
 // Whether or not server shall do rendering (not recommended for development)
@@ -37,7 +40,6 @@ const serverConfig = {
 	entry: {
 		"api-server": [
 			"webpack/hot/poll?1000",
-			"react-hot-loader/patch",
 			GLOBAL_STYLE_FILE,
 			SERVER_ENTRY_FILE
 		],
@@ -68,10 +70,53 @@ const serverConfig = {
 			"GLOBAL_ASSETS_PATH":
 				JSON.stringify(path.relative(SERVER_OUTPUT_PATH, CLIENT_OUTPUT_PATH)),
 		}),
+		new WebpackExtractTextPlugin(
+			path.relative(SERVER_OUTPUT_PATH, path.join(CLIENT_OUTPUT_PATH, "styles.css")),
+			{
+				allChunks: true,
+			}
+		),
 		new WebpackShellPlugin({
 			onBuildEnd: ['npm run server']
 		}),
-	]
+	],
+	module: {
+		rules: [
+			globalStylesLoader(WebpackExtractTextPlugin),
+			localStylesLoader(WebpackExtractTextPlugin),
+			// all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
+			{
+				test: typescriptRegEx,
+				include: SOURCE_ROOT_PATH,
+				use: [{
+					loader: "awesome-typescript-loader",
+					options: {
+						useBabel: true,
+						babelOptions: {
+							babelrc: false,
+							"presets": [
+								"react",
+								[
+									"env",
+									{
+										"modules": false,
+										"targets": {
+											"node": "6"
+										}
+									}
+								]
+							],
+							"plugins": [
+								"react-hot-loader/babel",
+								"react-loadable/babel",
+								"dynamic-import-node",
+							]
+						}
+					}
+				}]
+			},
+		]
+	}
 };
 
 module.exports = webpackMerge(commonConfig, serverConfig);

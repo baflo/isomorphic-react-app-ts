@@ -1,35 +1,40 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { preloadReady } from "react-loadable";
+import loadable from "react-loadable";
 import { BrowserRouter } from "react-router-dom";
-
 import { App } from "./app";
 
+const appNode = document.getElementById("app");
+
+function isPreRendered() {
+    return (appNode && appNode.innerHTML !== "") ||
+        process.env.NODE_ENV !== "development";
+}
+
 function render() {
-    const appNode = document.getElementById("app");
-
-    const app = (
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
-    );
-
     if (appNode) {
-        if (
-            appNode.innerHTML === "" &&
-            typeof process !== "undefined" &&
-            process.env &&
-            process.env.NODE_ENV === "development"
-        ) {
-            ReactDOM.render(app, appNode);
-        } else {
+        const app = (
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        );
+
+        if (isPreRendered()) {
             ReactDOM.hydrate(app, appNode);
+        } else {
+            ReactDOM.render(app, appNode);
         }
     }
 }
 
 if (typeof document !== "undefined") {
-    preloadReady().then(() => {
+    document.addEventListener("DOMContentLoaded", async () => {
+        if (isPreRendered()) {
+            await loadable.preloadReady();
+        } else {
+            await loadable.preloadAll();
+        }
+
         render();
     });
 }
