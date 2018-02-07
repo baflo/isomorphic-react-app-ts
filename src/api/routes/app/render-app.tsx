@@ -5,11 +5,17 @@ import ReactDOMServer from "react-dom/server";
 import loadable, { Capture as LoadableCapture } from "react-loadable";
 import { StaticRouter } from "react-router";
 import { Request } from "restify";
+import { getBundles } from "react-loadable/webpack";
 
 // Get information for react-laodable
-const { getBundles } = require("react-loadable/webpack"); // tslint:disable-line
-const loadableStats =
-    fs.readJSONSync(path.join(__dirname, REACT_LOADABLE_STATS_PATH));
+let loadableStats = {};
+
+const tryAndFindLoadableStats = setInterval(() => {
+    try {
+        loadableStats = fs.readJSONSync(path.join(__dirname, REACT_LOADABLE_STATS_PATH));
+        clearInterval(tryAndFindLoadableStats);
+    } catch{ }
+}, 1000);
 
 // Load app only if SSR is enabled. This is especially for development.
 const App = loadable({

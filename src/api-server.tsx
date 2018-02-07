@@ -16,7 +16,6 @@ if (module.hot) {
         });
     });
 
-    startServer();
 }
 
 let server: Server;
@@ -38,3 +37,5 @@ function startServer() {
             console.error("Failed to preload components:", error); // tslint:disable-line
         });
 }
+
+startServer();
